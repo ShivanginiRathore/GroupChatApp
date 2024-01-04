@@ -13,12 +13,14 @@ app.set('views', 'views');
 
 const userRoutes = require('./routes/user');
 const forgotpasswordRoutes = require('./routes/forgotpassword');
+const chatRoutes = require('./routes/chat')
 
 app.use(bodyParser.json());
 app.use(express.static('public'));
 
 app.use(userRoutes);
 app.use(forgotpasswordRoutes);
+app.use(chatRoutes);
 
 const PORT = process.env.PORT;
 
