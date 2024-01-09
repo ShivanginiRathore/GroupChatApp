@@ -1,6 +1,8 @@
-function sendMessage() {
+async function sendMessage() {
     const messageInput = document.getElementById('message-input');
     const message = messageInput.value.trim();
+    const token = localStorage.getItem('token');
+
 
     if (message !== '') {
         const chatBox = document.getElementById('chat-box');
@@ -9,6 +11,10 @@ function sendMessage() {
         newMessage.textContent = message;
 
         chatBox.appendChild(newMessage);
+        let messageDetails = {
+            message
+        }
+        const response = await axios.post("/saveMessage", messageDetails, {headers: {"Authorization":token}});
 
         // Clear the input field after sending the message
         messageInput.value = '';
