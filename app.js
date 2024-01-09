@@ -18,9 +18,19 @@ const chatRoutes = require('./routes/chat')
 app.use(bodyParser.json());
 app.use(express.static('public'));
 
+const User = require('./models/user');
+const forgotPasswordRequest = require('./models/forgotPasswordRequest');
+const Chat = require('./models/chat')
+
 app.use(userRoutes);
 app.use(forgotpasswordRoutes);
 app.use(chatRoutes);
+
+User.hasMany(forgotPasswordRequest);
+forgotPasswordRequest.belongsTo(User);
+
+User.hasMany(Chat);
+Chat.belongsTo(User);
 
 const PORT = process.env.PORT;
 
