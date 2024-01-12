@@ -25,6 +25,12 @@ body {
     background-color: #fff;
 }
 
+.user-input {
+    display: flex;
+    padding: 10px;
+    background-color: #fff;
+}
+
 input {
     flex: 1;
     padding: 8px;

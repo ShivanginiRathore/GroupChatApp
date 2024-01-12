@@ -17,3 +17,13 @@ exports.saveMessage = async (req, res, next) => {
         res.status(500).json(err);
     }
 }
+
+exports.loadChats = async (req, res, next) => {
+    try{
+        const chats = await Chat.findAll({where: {userId: req.user.id}});
+        res.status(200).json(chats);
+        
+    } catch(err){
+        res.status(500).json(err);
+    }
+}
