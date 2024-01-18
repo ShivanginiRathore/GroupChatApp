@@ -1,46 +1,13 @@
 const socket = io();
 
-
 const token = localStorage.getItem('token');
 const username = localStorage.getItem('username');
-var chats = document.querySelector(".chats");
-var users_list = document.querySelector(".users-list");
-var users_count = document.querySelector(".users-count");
-var msg_send = document.querySelector("#user-send");
-var user_msg = document.querySelector("#user-msg");
 
-
-socket.emit('new-user-joined', username);
-
-socket.on('user-connected', (socket_name) => {
-    userJoinLeft(socket_name, "joined")
-})
-
-function userJoinLeft(name, status){
-    let div = document.createElement("div");
-    div.classList.add('user-join');
-    let content = `<p><b>${name}</b>${status} the chat<p>`;
-    div.innerHTML=content;
-    chats.appendChild(div);
-    chats.scrollTop = chats.scrollHeight;
-}
-
-socket.on('user-disconnected', (socket_name) => {
-    userJoinLeft(socket_name, "left")
-})
-
-socket.on('user-list', (users) => {
-    users_list.innerHTML="";
-    users_arr = Object.values(users);
-    for(i=0; i<users_arr.length; i++){
-        let p = document.createElement('p');
-        p.innerText = users_arr[i];
-        users_list.appendChild(p);
-
-    }
-    users_count.innerHTML = users_arr.length;
-
-})
+const chats = document.querySelector(".chats");
+const msg_send = document.querySelector("#send-button");
+const user_msg = document.querySelector("#user-msg");
+const users_dropdown = document.getElementById("user-select");
+const dynamic_users = document.getElementById('users-list');
 
 msg_send.addEventListener('click', () => {
     let data = {
@@ -61,7 +28,8 @@ function appendMessage(data, status) {
     let content = `<h5>${data.user}</h5>
     <p>${data.msg}</p>`;
     div.innerHTML=content;
-    chats.appendChild(div);
+    div.classList.add()
+    chats.appendChild(div);                 
     chats.scrollTop = chats.scrollHeight;
 }
 
@@ -69,45 +37,51 @@ socket.on('message', (data) => {
     appendMessage(data,'incoming');
 })
 
-function showMessageinChatBox(message){
-    const chatBox = document.getElementById('chat-box');
-    const newMessage = document.createElement('div');
-    newMessage.className = 'message';
-    newMessage.textContent = message;
+window.addEventListener("DOMContentLoaded", async () => {
+    const users = await axios.get('/loadUsers',{headers:{"Authorization":token}});
+    // console.log(users);
+    users.data.forEach(user => {
+        let option = document.createElement("option");
+        option.text = user.name;
+        users_dropdown.add(option);
 
-    chatBox.appendChild(newMessage);
+        // to add users dynamically
+        let userList = document.createElement("li");
+        userList.textContent = user.name
+        dynamic_users.appendChild(userList);
+    });
+})
+
+// to get the user/groupname to start the chat
+dynamic_users.addEventListener('click', userclicked);    
+
+function userclicked(e){
+    e.preventDefault();
+    console.log("user clicked", e.target.textContent)
+    // document.getElementById('start-head').element.style.display = 'none';();
+    // document.getElementById('chat-panel').show();
+
+    // $('.start-head').hide();
+//         $('#chat-panel').show();
+//     })
+
 }
 
-// window.addEventListener("DOMContentLoaded", async () => {
-//     const chats = await axios.get('/loadChats',{headers:{"Authorization":token}});
 
-//     chats.data.forEach(row => {
-//         showMessageinChatBox(row.message);
-//     });
+function submitGroup() {
+    var groupName = document.getElementById('groupName').value;
+    var selectedUsers = Array.from(document.getElementById('user-select').selectedOptions).map(option => option.value);
+    
+    // Do something with the group name and selected users
+    console.log('Group Name:', groupName);  
+    console.log('Selected Users:', selectedUsers);
 
+    // You can perform additional actions here, such as sending the data to a server or updating the UI.
+  }
+
+// $(document).ready(function(){
+//     $('.users-list').click(function(){
+//     alert('uservlicked')
+
+//         
 // })
-
-// async function sendMessage() {
-//     const messageInput = document.getElementById('user-msg');
-//     const message = messageInput.value.trim();
-
-
-//     if (message !== '') {
-//         const chatBox = document.getElementById('chat-box');
-//         const newMessage = document.createElement('div');
-//         newMessage.className = 'message';
-//         newMessage.textContent = message;
-
-//         chatBox.appendChild(newMessage);
-//         let messageDetails = {
-//             message
-//         }
-//         const response = await axios.post("/saveMessage", messageDetails, {headers: {"Authorization":token}});
-
-//         // Clear the input field after sending the message
-//         messageInput.value = '';
-
-//         // Optionally, you can implement functionality to scroll to the bottom of the chat box
-//         chatBox.scrollTop = chatBox.scrollHeight;
-//     }
-// }

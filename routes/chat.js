@@ -8,6 +8,6 @@ router.get('/chat', chatController.loadChatPage);
 
 router.post('/saveMessage', userAuthentication.authenticate, chatController.saveMessage);
 
-router.get('/loadChats', userAuthentication.authenticate, chatController.loadChats);
+router.get('/loadUsers', userAuthentication.authenticate, chatController.loadUsers);
 
 module.exports = router;

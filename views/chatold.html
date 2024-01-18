@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Chat App</title>
+    <link rel="stylesheet" href="/css/chatnew.css">
+</head>
+<body>
+    <div class="container">
+        <div id="users-panel" class="user-window">
+            <div class="users-head">
+                <h3>People</h3>
+                <h4 class="users-count"></h4>
+            </div>
+            <div class="users-list"></div>
+        </div>
+            
+        <div class="chat-window">
+            <div id="chat-box" class="chats">
+
+            </div>
+            <div id="message-input" class="user-input">
+                <input type="text" id="user-msg" placeholder="Type your message...">
+                    <!-- <button id="user-send" type="button" onclick="sendMessage()">Send</button> -->
+                <button id="send-button" type="button">Send</button>
+
+            </div>
+    </div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.3.6/axios.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/chat.js"></script>
+</body>
+</html>
