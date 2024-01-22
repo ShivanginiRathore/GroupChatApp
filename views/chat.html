@@ -9,6 +9,7 @@
 
     <header>
         <h1>Group Chat</h1>
+        <label id="welcome_msg" style="text-align: left"></label>
     </header>
 
     <main>
@@ -17,16 +18,38 @@
                 <!-- <input type="checkbox" value="Selection 1" />
                 Selection One -->
             </ul>
+        
         </div>
-        <h3 id="start-head">Click user name to start the chat</h3>
-        <div id="chat-panel">
-            <div id="group-info">
+        <div id="group-details" class="hide-display">
+            <button type="button" onclick="backToUserPanel()">Back</button>
+            <div id="admin-rights-add-user">
+                <label for="userInput">Search User:</label>
+                <input type="text" id="userInput" placeholder="Start typing...">
+                <select id="member-select">
+                </select>
+                <button id="add_new_user" onclick="addNewUser()">Add</button>
+                <label id="error_message"></label>
+                <!-- <div id="searchResults"></div> -->
+            </div>
+            <ul id="group-members-name">
+                <!-- users in the group will appear here -->
+            </ul>
+            
+        </div>
+        
+       <div id="chat-panel">
+            <div id="create-group">
                 <input id="groupName" type="text" placeholder="Enter the group name">
                 <select id="user-select" multiple required>
                 </select>
                 <button type="button" onclick="submitGroup()">Create group</button>
             </div>
-
+            <h3 id="start-head">Click user name to start the chat</h3>
+            <!-- <div id="group-members">
+                <ul id="group-members-name"></ul>
+                <button type="button" onclick="">Add users</button>
+            </div> -->
+            <div id="chat-container">
             <div id="chat-box" class="chats">
                 <!-- Chat messages will appear here -->
             </div>
@@ -34,6 +57,7 @@
             <div id="message-input">
                 <input type="text" id="user-msg" placeholder="Type your message...">
                 <button id="send-button" type="button">Send</button>
+            </div>
             </div>
         </div>
     </main>

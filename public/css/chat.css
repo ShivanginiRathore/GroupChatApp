@@ -48,7 +48,7 @@ main {
     flex-direction: column;
 }
 
-#group-info {
+#create-group {
     background-color: #ddd;
     padding: 10px;
     display: flex;
@@ -56,8 +56,8 @@ main {
     align-items: center;
 }
 
-#group-info input,
-#group-info select {
+#create-group input,
+#create-group select {
     margin-right: 10px;
     padding: 5px;
 }
@@ -112,7 +112,34 @@ main {
     /* align-self: flex-start; Align to the left */
     text-align: left;
 }
-#chat-panel{
+#chat-container{
+    display: none;
+}
+#group-members{
     display: none;
 }
   
+.hide-display{
+    display: none;
+}
+
+#group-details {
+    width: 200px;
+    background-color: #f4f4f4;
+    overflow-y: auto;
+}
+#admin-rights-add-user{
+    display: none;
+}
+
+button {
+    padding: 8px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}

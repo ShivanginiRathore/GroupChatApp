@@ -12,7 +12,9 @@ async function validateForm(e) {
             document.body.innerHTML += `<div style="color:green;"> ${response.data.message} </div>`;
             // console.log(response.data);
             localStorage.setItem('token', response.data.token);
-            localStorage.setItem('username', response.data.username)
+            localStorage.setItem('username', response.data.username);
+            localStorage.setItem('useremail', response.data.email)
+
             window.location.href = "../chat"
         }
         else if(response.status === 401){

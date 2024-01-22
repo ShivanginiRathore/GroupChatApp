@@ -32,8 +32,8 @@ exports.signupUser = async (req, res, next) => {
     }
 }
 
-function generateAccessToken(id){
-    return jwt.sign({userId : id}, 'longtoken')
+function generateAccessToken(email){
+    return jwt.sign({email : email}, 'longtoken')
 }
 
 
@@ -52,7 +52,7 @@ exports.loginUser = async(req, res, next) => {
                     res.status(500).json(err);
                 }
                 if(result === true){
-                    res.status(200).json({message: 'Successfully logged in', token: generateAccessToken(user[0].id), username: user[0].name})
+                    res.status(200).json({message: 'Successfully logged in', token: generateAccessToken(user[0].email), username: user[0].name, email: user[0].email})
                 } else {
                     res.status(401).json({message: 'Incorrect password'});
                 }
