@@ -19,14 +19,13 @@ let groupName;
 var debounceTimer;
 
 function searchUsers() {
-            // Get the value from the search input
+    // Get the value from the search input
     var searchTerm = document.getElementById('userInput').value;
     document.getElementById('error_message').innerHTML = '';
 
 
     clearTimeout(debounceTimer);
     debounceTimer = setTimeout(async function() {
-        // document.getElementById('searchResults').innerHTML = 'Searching for: ' + searchTerm;
         let userDetails = {
             name:searchTerm
         }
@@ -48,9 +47,7 @@ search_users_dropdown.addEventListener('click', newUserSelected);
 
 async function newUserSelected(e){
     e.preventDefault();
-    // let newUserName = e.target.textContent;
     var newUserName = Array.from(document.getElementById('member-select').selectedOptions).map(option => option.value);
-
     document.getElementById('userInput').value = newUserName;
 }
 
@@ -78,8 +75,6 @@ async function addNewUser(){
         // console.log(response.data.message)
         document.getElementById('error_message').innerHTML += `<div style="color:red;"> ${response.data.message} </div>`;
     }
-    
-
 }
 
 msg_send.addEventListener('click', async () => {
@@ -100,7 +95,6 @@ msg_send.addEventListener('click', async () => {
             
             user_msg.value = '';
             appendMessage(data,'outgoing');
-            // socket.emit('message', data);
             socket.emit('newChat', data);
 
         } else {
@@ -118,8 +112,31 @@ msg_send.addEventListener('click', async () => {
 function appendMessage(data, status) {
     let div = document.createElement('div');
     div.classList.add('message', status);
-    let content = `<h5>${data.senderId}</h5>
-     <p>${data.message}</p>`;
+    // let message;
+    let content;
+    const imageExtensions = /\.(jpg|jpeg|png|gif|bmp|webp)$/i;
+
+    if(imageExtensions.test(data.message)){
+        // message = 'this is an image'
+        // const image = document.createElement("img");
+
+        // image.src = data.message;
+
+        // image.alt = "this is an image";
+        // image.width = 300; 
+        // image.height = 200;
+
+        content = `<img src=${data.message} width=300 height=200>`
+
+//   const imageContainer = document.getElementById("imageContainer");
+
+  // Append the image to the container
+//   imageContainer.appendChild(image);
+    }  else {
+        content = `<h5>${data.senderId}</h5>
+        <p>${data.message}</p>`;
+    }  
+    
     div.innerHTML=content;
     div.classList.add()
     chats.appendChild(div);                 
@@ -175,12 +192,16 @@ window.addEventListener("DOMContentLoaded", async () => {
 function createUserList(name, email, isGroup){
     let userList = document.createElement("li");
     // to add group icon if its a group
-    if(isGroup === 'group'){
-        // console.log('inside group image')
-        const icon = document.createElement("img");
-        icon.src = "/src/user.svg";
-        userList.appendChild(icon)
-    }
+    const icon = document.createElement("img");
+    icon.src = "/src/user.svg";
+    userList.appendChild(icon);
+
+    // if(isGroup === 'group'){
+    //     // console.log('inside group image')
+    //     const icon = document.createElement("img");
+    //     // icon.src = "/src/user.svg";
+    //     icon.src = 'https://images.pexels.com/photos/1133957/pexels-photo-1133957.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
+    // }
     userList.textContent = name;
     userList.id = email;
     dynamic_users.appendChild(userList);
@@ -321,3 +342,34 @@ async function deleteUserFromGroup(e){
         }
     }
 }
+
+
+    const fileInput = document.querySelector('#fileInput');
+    const attachButton = document.querySelector('#attachButton');
+    // const sendMessageButton = document.querySelector('#sendMessageButton');
+
+    // Handle file attachment button click
+    attachButton.addEventListener('click', () => {
+      fileInput.click();
+    });
+
+    // Handle file input change
+    fileInput.addEventListener('change', async (event) => {
+      const file = event.target.files[0];
+      let formData = new FormData();
+      formData.append('myFile',file);
+      formData.append('groupName',groupName);
+
+      if (file) {
+
+        const response = await axios.post('/file', formData, {headers:{"Authorization":token, 'Content-Type': 'multipart/form-data'}})
+        if(response.data.success){
+            const data = response.data.data;
+            console.log('url saved');
+            appendMessage(data,'outgoing');
+            socket.emit('newChat', data);
+
+        }
+      }
+    });
+

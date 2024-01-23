@@ -3,7 +3,6 @@
 const http = require("http");
 const express = require('express');
 
-
 const bodyParser = require('body-parser');
 var cors = require('cors');
 const dotenv = require('dotenv');
@@ -15,6 +14,8 @@ const app = express();
 
 app.use(cors());
 app.set('views', 'views');
+
+const chatController = require('./controllers/chat')
 
 const userRoutes = require('./routes/user');
 const forgotpasswordRoutes = require('./routes/forgotpassword');
@@ -49,8 +50,6 @@ Chat.belongsTo(User);
 
 User.hasMany(forgotPasswordRequest);
 forgotPasswordRequest.belongsTo(User);
-
-
 
 const PORT = process.env.PORT;
 const server = http.createServer(app);

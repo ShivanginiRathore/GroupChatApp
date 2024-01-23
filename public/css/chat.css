@@ -143,3 +143,6 @@ button {
 button:hover {
     background-color: #45a049;
 }
+#attachButton{
+    margin-right: 10px;
+}

@@ -1,12 +1,14 @@
 const path = require('path');
 const rootDir = path.dirname(process.mainModule.filename);
+
 const Chat = require('../models/chat');
 const User = require('../models/user');
 const Group = require('../models/group');
 const GroupMember = require('../models/groupMember');
 
 const Sequelize = require('sequelize');
-const { fail } = require('assert');
+const S3Services = require('../services/S3services');
+
 
 exports.loadChatPage = (req, res, next) => {
     res.sendFile(path.join(rootDir,'views','chat.html'));
@@ -185,3 +187,23 @@ exports.deleteUser = async (req, res, next) => {
     }
 }
 
+exports.fileUpload = async(req, res, next) => {
+    try{
+
+        const fileName = req.file.originalname;
+        const fileData = req.file.buffer;
+        const senderId = req.user.name;
+        const {groupName} = req.body;
+
+        const url = await S3Services.uploadToS3(fileData, fileName);
+        console.log('url is ',url)
+        // const fileList = await req.user.createFileDownloaded({url});
+        const response = await req.user.createChat({senderId: senderId, receiverId:groupName, message:url, groupGroupName:groupName});
+
+        res.status(200).json({data:response,success: true});
+    
+    } catch(err) {
+        console.log(err);
+        res.status(500).json({url: '', success: false})
+    }
+}
